@@ -1,0 +1,34 @@
+<h2>Attendance</h2>
+<form [formGroup]="attendanceForm" (ngSubmit)="onSubmit()">
+    <input type="hidden" formControlName="id" class="form-control"/>
+    <div class="form-group">
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" placeholder="Angular forms" [formControl]="date">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        
+    </div>
+    <div *ngFor="let ed of enrolmentsDetails; let i = index" style="float: left;clear: left; height: 70%; padding:20px; text-align: center;width: 100%;">
+        <div style="float:left;text-align: left; background: rgb(228, 226, 226); width: 50%;padding: 10px;height: 60px;">{{ed.name}}</div>
+        <div style="text-align: right; background: rgb(228, 226, 226);width: 50%;float:right;padding:10px;">
+            <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.status.errors }"
+              courseId="ed.courseId" studentId="ed.studentId" enrolmentId="ed.enrolmentId" (click)='onchange(ed.id,ed.studentId,ed.courseId,this.value, i)'>
+                <option value="" disabled>Choose Status</option>
+                <option value="PRESENT">Present</option>
+                <option value="ABSENT">Absent</option>
+             </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Add
+        </button>
+        <span style="padding: 10px;"></span>
+        <button [disabled]="loading" class="btn btn-primary" (click)="closeDialog()">
+            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+            Close
+        </button>
+    </div>
+</form>

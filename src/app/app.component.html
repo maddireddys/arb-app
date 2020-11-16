@@ -1,0 +1,32 @@
+<div style="width: 100%;height: 100%;">
+  <div style="text-align: center;"><h1>Welcome to Attendance System</h1></div>
+<div style="height: 80%;">
+    <div *ngIf="currentUser" style="width: 10%;height: 80%; float: left;background: #f1eeee;">
+        <div *ngIf="currentUser.type === 'Student'">
+          <ul>
+          <li> <a class="nav-item nav-link" routerLink="/">Home</a></li>
+          <li><a class="nav-item nav-link" (click)="logout()">Logout</a></li>
+          </ul>
+        </div>
+        <div *ngIf="currentUser.type === 'Teacher'">
+          <ul>
+          <li><a class="nav-item nav-link" routerLink="/">Home</a></li>
+          <li><a class="nav-item nav-link" (click)="logout()">Logout</a></li>
+        </ul>
+        </div>
+    </div>
+  
+  <!-- main app container -->
+  <div style="width: 80%;height: 80%;float: left;padding: left 10%;">
+      <div>
+          <alert></alert>
+        </div>
+        <div>
+          <router-outlet></router-outlet>
+        </div>
+    </div>
+</div>  
+<div style="width: 100%; clear: left;">
+  <div style="text-align: center;"><h1> Footer</h1></div>    
+</div>
+</div>
