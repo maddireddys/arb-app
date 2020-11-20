@@ -7,6 +7,7 @@ import { AttendanceDetails } from '../models/AttendanceDetails';
 import { DialogData } from '../models/DialogData';
 import { EnrolmentsDetails } from '../models/EnrolmentsDetails';
 import { AlertService } from '../services/alert.service';
+import { AttendanceService } from '../services/attendance.service';
 import { AuthService } from '../services/auth.service';
 import { CourseService } from '../services/course.service';
 
@@ -28,6 +29,7 @@ export class AttendancedialogComponent implements OnInit {
     private authService: AuthService,
     private courseService: CourseService,
     private alertService: AlertService,
+    private attendanceService: AttendanceService,
     public dialogRef: MatDialogRef<AttendancedialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { 
 
@@ -43,6 +45,7 @@ export class AttendancedialogComponent implements OnInit {
   get f() { return this.attendanceForm.controls; }
 
   loadEnrolments(courseId) {
+    this.attendanceMap = new Map();
     this.courseService.loadEnrolments(courseId)
       .pipe(first())
       .subscribe(
@@ -55,18 +58,26 @@ export class AttendancedialogComponent implements OnInit {
               console.log("internal serve error");
           });
   }
-  onSubmit() {
+  add() {
     this.submitted = true;
-  if (this.attendanceForm.invalid) {
+  if (this.attendanceForm.invalid || !this.attendanceMap) {
+    this.alertService.error("Invalid input");
+    this.submitted = false;
     return;
 }
 this.loading = true;
-    this.courseService.addCourse(this.attendanceForm.controls.date.value, this.authService.loggedinUser.id)
+let dtos = Array.from(this.attendanceMap, ([name, value]) => ( value ));
+if(dtos.length < 1) {
+  this.loading = false;
+  this.submitted = false;
+  this.alertService.error("Please select at least one");
+  return;
+}
+    this.attendanceService.addAttendance(dtos)
       .pipe(first())
       .subscribe(
           data => {
               if(data.status == 'Success') {
-                this.alertService.success("Course added succesfully");
                 this.dialogRef.close();
               } else {
                 this.loading = false;
@@ -80,7 +91,7 @@ this.loading = true;
           });
   }
 
-  onchange(enrolmentId,studentId,courseId,status, index) {
+  onchange(enrolmentId, studentId, courseId, status, index) {
     if (!this.data) {
       this.submitted = true;
       return;
@@ -96,7 +107,6 @@ this.loading = true;
     } else {
       this.attendanceMap.delete(index);
     }
-
   }
 
   closeDialog() {

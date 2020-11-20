@@ -20,6 +20,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {MatDatepickerModule} from '@angular/material/datepicker'
 import { MatNativeDateModule } from '@angular/material/core';
+import { AttendanceShowDialogComponent } from './attendance-show-dialog/attendance-show-dialog.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     RegisterComponent,
     AddcoursedialogComponent,
     StudenthomeComponent,
-    AttendancedialogComponent
+    AttendancedialogComponent,
+    AttendanceShowDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -44,7 +46,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
   ],
-  entryComponents: [AddcoursedialogComponent, AttendancedialogComponent],
+  entryComponents: [AddcoursedialogComponent, AttendancedialogComponent, AttendanceShowDialogComponent],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },

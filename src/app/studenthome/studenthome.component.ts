@@ -1,9 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
+import { AttendanceShowDialogComponent } from '../attendance-show-dialog/attendance-show-dialog.component';
+import { AttendancedialogComponent } from '../attendancedialog/attendancedialog.component';
 import { CourseDetails } from '../models/CourseDetails';
+import { DialogData } from '../models/DialogData';
 import { AlertService } from '../services/alert.service';
+import { AttendanceService } from '../services/attendance.service';
 import { AuthService } from '../services/auth.service';
 import { CourseService } from '../services/course.service';
 
@@ -19,7 +24,8 @@ export class StudenthomeComponent implements OnInit {
     private router: Router,
     private authService: AuthService,
     private courseService: CourseService,
-    private alertService: AlertService) { }
+    private attendanceService: AttendanceService,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.loadStudentCourse();
@@ -31,10 +37,11 @@ export class StudenthomeComponent implements OnInit {
       .subscribe(
           data => {
                 this.courseDetails = data.data;
-                console.log(JSON.stringify(this.courseDetails));
           },
           error => {
               console.log("internal serve error");
+              localStorage.removeItem('user');
+              this.router.navigate(['/login']);
           });
   }
   enrolCourse(courseId) {
@@ -47,6 +54,15 @@ export class StudenthomeComponent implements OnInit {
           error => {
               console.log("internal serve error");
           });
+  }
+
+  showAttendanceDialog(courseId) {
+    const dialogRef = this.dialog.open(AttendanceShowDialogComponent,
+      {width: '60%',data: {courseId: courseId}});
+  
+    dialogRef.afterClosed().subscribe(result => {
+      
+    });
   }
 
 }

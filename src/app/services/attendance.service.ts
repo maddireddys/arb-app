@@ -19,7 +19,19 @@ export class AttendanceService {
           .pipe(map(data => {
               // store user details and jwt token in local storage to keep user logged in between page refreshes
               if(data.status === 'Success') {
-                this.alertService.success("Attendance Added succesfully", true);
+                this.alertService.success("Succesfully added Attendance", true);
+                return data;
+              }else {
+                this.alertService.error(data.data.message, true);
+              }
+          }));
+    }
+
+    loadAttendance(courseId: number, studentId: number) {
+      return this.http.get<any>(this.baseUrl+'/attendance/load/'+courseId+"/"+studentId)
+          .pipe(map(data => {
+              // store user details and jwt token in local storage to keep user logged in between page refreshes
+              if(data.status === 'Success') {
                 return data;
               }else {
                 this.alertService.error(data.data.message, true);

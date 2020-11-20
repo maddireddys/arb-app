@@ -14,12 +14,11 @@ export class AuthGuard implements CanActivate {
         const currentUser = this.authService.loggedinUser;
         if (currentUser) {
             // authorised so return true
-            console.log(JSON.stringify(currentUser));
+            if(currentUser.type == 'Student' && state.url === "/") {
+                this.router.navigate(['/student']);
+            }
             return true;
         }
-
-        // not logged in so redirect to login page with the return url
-        console.log(state.url+"....");
         if(state.url === "/") {
             this.router.navigate(['/login']);
         } else {

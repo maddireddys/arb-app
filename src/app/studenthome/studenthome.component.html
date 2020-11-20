@@ -8,7 +8,7 @@
     <div *ngFor="let course of courseDetails; let i = index" style="float: left;clear: left; height: 70%; padding:20px; text-align: center;width: 100%;">
         <div style="float:left;text-align: left; background: rgb(228, 226, 226); width: 50%;padding: 10px;">{{course.name}}</div>
         <div style="text-align: right; background: rgb(228, 226, 226);width: 50%;float:right;padding:10px;" *ngIf="course.enrolled">
-            <a link="javascript:void(0);" (click)="showAttendanceDialog();">Show Attendance</a>
+            <a link="javascript:void(0);" (click)="showAttendanceDialog(course.id);">Show Attendance</a>
         </div>
         <div style="text-align: right; background: rgb(228, 226, 226);width: 50%;float:right;padding:10px;" *ngIf="!course.enrolled">
             <a link="javascript:void(0);" (click)="enrolCourse(course.id);">Enrol</a>

@@ -66,6 +66,8 @@ export class HomeComponent implements OnInit {
             },
             error => {
                 console.log("internal serve error");
+                localStorage.removeItem('user');
+                this.router.navigate(['/login']);
             });
     }
 }
